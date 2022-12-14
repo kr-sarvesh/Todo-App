@@ -1,16 +1,16 @@
-import React from 'react'
-import logo from '../images/logo.png'
+import { Link } from 'react-router-dom'
+import logo from './images/logo.png'
 function Nav() {
   return (
     <div className='navbar bg-base-100'>
       <div className='flex-1'>
-        <a href='/' className=''>
+        <Link to='/' className=''>
           <img
             src={logo}
             alt='logo-not found'
             className='object-fill w-24 h-24'
           />
-        </a>
+        </Link>
       </div>
       <div className='flex-none gap-2'>
         <div className='form-control'>
@@ -31,16 +31,16 @@ function Nav() {
             className='mt-3 p-2 shadow menu menu-compact dropdown-content bg-base-100 rounded-box w-52'
           >
             <li>
-              <a href='/' className='justify-between'>
+              <Link to='/' className='justify-between'>
                 Profile
                 <span className='badge'>New</span>
-              </a>
+              </Link>
             </li>
             <li>
-              <a href='/'>Settings</a>
+              <Link href='/'>Settings</Link>
             </li>
             <li>
-              <a href='/'>Logout</a>
+              <Link to='/'>Logout</Link>
             </li>
           </ul>
         </div>
