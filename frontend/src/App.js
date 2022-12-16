@@ -3,7 +3,7 @@ import { BrowserRouter as Router } from 'react-router-dom'
 import Nav from './Components/Layouts/Nav'
 import Footer from './Components/Layouts/Footer'
 import Todos from './Components/Todos'
-
+import AddTodo from './Components/AddTodo'
 function App() {
   const onDelete = (todo) => {
     console.log('I am on delete of todo', todo)
@@ -33,10 +33,11 @@ function App() {
 
   return (
     <Router>
-      <div className='flex flex-col justify-between h-screen'>
+      <div className='flex flex-col  h-screen'>
         <Nav />
-        <main className='container mx-auto px-3 pb-12'>
+        <main className='flex border-2'>
           <Todos todos={todos} onDelete={onDelete} />
+          <AddTodo />
         </main>
         <Footer />
       </div>

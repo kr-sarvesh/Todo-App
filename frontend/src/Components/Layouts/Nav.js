@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 import logo from './images/logo.png'
 function Nav() {
   return (
-    <div className='navbar bg-base-100'>
+    <div className='navbar px-4 py-2 bg-base-100 '>
       <div className='flex-1'>
         <Link to='/' className=''>
           <img
