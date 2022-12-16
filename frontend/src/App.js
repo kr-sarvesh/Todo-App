@@ -1,12 +1,19 @@
+import { useState } from 'react'
 import { BrowserRouter as Router } from 'react-router-dom'
 import Nav from './Components/Layouts/Nav'
 import Footer from './Components/Layouts/Footer'
 import Todos from './Components/Todos'
+
 function App() {
-  const onDelete = () => {
-    console.log('I am on delete of todo')
+  const onDelete = (todo) => {
+    console.log('I am on delete of todo', todo)
+    setTodos(
+      todos.filter((e) => {
+        return e !== todo
+      })
+    )
   }
-  let todos = [
+  const [todos, setTodos] = useState([
     {
       sno: 1,
       title: 'Go to the market',
@@ -22,7 +29,8 @@ function App() {
       title: 'Go to the shop',
       desc: 'You need to go to the shop to get this job done 03',
     },
-  ]
+  ])
+
   return (
     <Router>
       <div className='flex flex-col justify-between h-screen'>
