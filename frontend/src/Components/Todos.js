@@ -1,10 +1,11 @@
 import TodoItem from './TodoItem'
+
 function Todos(props) {
   return (
-    <div className='container mx-auto px-3 pb-12'>
-      <h3 className='container mx-auto my-3'>Todos List</h3>
+    <div className='px-2 '>
+      <h3 className='container mx-auto  my-4 '>Todos List</h3>
       {props.todos.length === 0
-        ? 'No todos to display'
+        ? 'noTodo'
         : props.todos.map((todo) => {
             return (
               <TodoItem todo={todo} key={todo.sno} onDelete={props.onDelete} />

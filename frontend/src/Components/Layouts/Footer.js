@@ -4,7 +4,7 @@ function Footer() {
   //Year that needs to be updated every year automatically
   const footeryear = new Date().getFullYear()
   return (
-    <footer className='footer items-center p-5 bg-neutral text-neutral-content footer-center'>
+    <footer className='footer p-5 bg-neutral text-neutral-content footer-center '>
       <div className='items-center grid-flow-col'>
         <svg
           width='36'

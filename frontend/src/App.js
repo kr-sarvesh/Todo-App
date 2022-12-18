@@ -33,9 +33,9 @@ function App() {
 
   return (
     <Router>
-      <div className='flex flex-col  h-screen'>
+      <div className='grid grid-col-3 content-between min-h-screen '>
         <Nav />
-        <main className='flex border-2'>
+        <main className='flex justify-around'>
           <Todos todos={todos} onDelete={onDelete} />
           <AddTodo />
         </main>
