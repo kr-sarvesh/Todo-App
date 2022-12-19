@@ -1,4 +1,4 @@
-import { MdOutlineDeleteOutline } from 'react-icons/md'
+import { MdOutlineDeleteOutline, MdEdit } from 'react-icons/md'
 function TodoItem({ todo, onDelete }) {
   return (
     <div className='card bg-slate-400 text-neutral shadow-xl mb-6  flex flex-col card-body'>
@@ -18,6 +18,7 @@ function TodoItem({ todo, onDelete }) {
         >
           Delete
         </MdOutlineDeleteOutline>
+        <MdEdit></MdEdit>
       </div>
     </div>
   )
