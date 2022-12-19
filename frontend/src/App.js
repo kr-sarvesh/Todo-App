@@ -4,6 +4,7 @@ import Nav from './Components/Layouts/Nav'
 import Footer from './Components/Layouts/Footer'
 import Todos from './Components/Todos'
 import AddTodo from './Components/AddTodo'
+
 function App() {
   const onDelete = (todo) => {
     console.log('I am on delete of todo', todo)
@@ -17,17 +18,17 @@ function App() {
     {
       sno: 1,
       title: 'Go to the market',
-      desc: 'You need to go to the market to get this job done 01',
+      task: 'You need to go to the market to get this job done 01',
     },
     {
       sno: 2,
       title: 'Go to the mall',
-      desc: 'You need to go to the mall to get this job done 02',
+      task: 'You need to go to the mall to get this job done 02',
     },
     {
       sno: 3,
       title: 'Go to the shop',
-      desc: 'You need to go to the shop to get this job done 03',
+      task: 'You need to go to the shop to get this job done 03',
     },
   ])
 
