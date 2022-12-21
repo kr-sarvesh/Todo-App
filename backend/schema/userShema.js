@@ -2,8 +2,8 @@ import mongoose from 'mongoose'
 const TodoSchema = new mongoose.Schema({
   title: {
     type: String,
-    required: true,
-    default: undefined,
+    trim: true,
+    required: [true, 'Title is required'],
   },
   tasks: [String],
 })
