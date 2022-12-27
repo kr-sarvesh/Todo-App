@@ -4,13 +4,15 @@ function Todos(props) {
     <div>
       <h3 className='container mx-auto  my-4 '>Todos List</h3>
 
-      {props.todos.length === 0
-        ? 'noTodo found'
-        : props.todos.map((todo) => {
-            return (
-              <TodoItem todo={todo} key={todo.sno} onDelete={props.onDelete} />
-            )
-          })}
+      {props.todos.length === 0 ? (
+        <div>Please add Todo</div>
+      ) : (
+        props.todos.map((todo) => {
+          return (
+            <TodoItem todo={todo} key={todo.sno} onDelete={props.onDelete} />
+          )
+        })
+      )}
     </div>
   )
 }

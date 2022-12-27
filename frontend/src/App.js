@@ -19,6 +19,7 @@ function App() {
       sno: 1,
       title: 'Go to the market',
       task: 'You need to go to the market to get this job done 01',
+      task2: 'You need to go to the market to get this job done 01',
     },
     {
       sno: 2,
@@ -36,7 +37,7 @@ function App() {
     <Router>
       <div className='grid grid-col-3 content-between min-h-screen '>
         <Nav />
-        <main className='flex justify-around'>
+        <main className='sm:flex sm:flex-col-rev md:flex  justify-around'>
           <Todos todos={todos} onDelete={onDelete} />
           <AddTodo />
         </main>
