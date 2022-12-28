@@ -1,17 +1,19 @@
 const mongoose = require('mongoose')
 
-const connectDB = () => {
+const connectToDB = () => {
   mongoose
-    .connect('mongodb://localhost:27017/playground', {
+    .connect(process.env.MONGO_URI, {
       useCreateIndex: true,
       useNewUrlParser: true,
       useUnifiedTopology: true,
-      useFindAndModify: false,
     })
-    .then(() => console.log('Connected Successfully'))
+    .then((conn) =>
+      console.log('Connected Successfully to DB ${conn.connection.host}')
+    )
     .catch((err) => {
-      console.error('Not Connected')
+      console.error(err.message)
+      process.exit(1)
     })
 }
 
-module.exports = connectDB
+module.exports = connectToDB

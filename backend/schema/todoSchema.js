@@ -5,7 +5,9 @@ const TodoSchema = new mongoose.Schema({
     trim: true,
     required: [true, 'Title is required'],
   },
-  tasks: [String],
+  tasks: {
+    type: String,
+    required: [true, 'Task is required'],
+  },
 })
-const TodoModel = mongoose.model('Todo', TodoSchema)
-export default TodoModel
+module.exports = mongoose.model('Todo', TodoSchema)
