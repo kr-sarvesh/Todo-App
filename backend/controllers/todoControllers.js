@@ -41,3 +41,44 @@ exports.todoGet = async (req, res) => {
     })
   }
 }
+
+//Search All Todos
+
+exports.getAllAndFilteredTodos = async (req, res) => {
+  try {
+    //check if any querry is present
+    const query = req.query
+    if (Object.keys(query).length === 0) {
+      //return all todos
+      const todos = await TodoSchema.find()
+      // send response
+      return res.status(200).json({
+        status: 'success',
+        results: todos.length,
+        todos,
+      })
+    }
+    //if query exists, send filtered todos
+    else {
+      const todos = await TodoSchema.find(query)
+      if (todos.length === 0) {
+        return res.status(404).json({
+          status: 'fail',
+          message: 'No todo found with this query',
+        })
+      }
+      return
+      res.status(200).json({
+        status: 'success',
+        results: todos.length,
+        todos,
+      })
+    }
+  } catch (error) {
+    console.log(error)
+    res.status(404).json({
+      success: false,
+      message: error.message,
+    })
+  }
+}
