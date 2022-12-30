@@ -8,26 +8,32 @@ exports.home = (req, res) => {
 exports.aboutus = (req, res) => {
   res.send('About us page')
 }
+
 //=========== Create Todos ===========//
 
 exports.todoCreate = async (req, res) => {
   try {
     const { title, tasks, isImportant } = req.body
-    if (!title || !tasks) {
+    if (!title && !tasks) {
       throw new Error('Title and Task both are required')
     }
+    // Check if todo already Exists :
     const todoExists = await TodoSchema.findOne({ title })
     if (todoExists) {
       throw new Error('Todo already exists')
     }
-    const todo = await TodoSchema.create({ title, task })
 
-    res.status(201).json({ todo })
+    // Insert the Todo into Database
+    const todo = await TodoSchema.create({ title, tasks })
+    res.status(201).json({
+      success: true,
+      message: 'Todo created successfully',
+      todo,
+    })
   } catch (error) {
     console.log(error)
   }
 }
-
 //=========== Get All Todos ===========//
 
 exports.todoGet = async (req, res) => {
@@ -35,6 +41,7 @@ exports.todoGet = async (req, res) => {
     const todos = await TodoSchema.find()
     res.status(200).json({
       success: true,
+      message: 'Todos fetched successfully',
       todos,
     })
   } catch (error) {
@@ -43,6 +50,27 @@ exports.todoGet = async (req, res) => {
       success: false,
       message: error.message,
     })
+  }
+}
+
+//=========== Add Tasks to Todos ===========//
+exports.createTask = async (req, res) => {
+  try {
+    const { todoId } = req.params
+    const todo = await TodoSchema.findById(todoId)
+    if (!todo) {
+      throw new Error('Todo not found')
+      res.status(401).send('Todo not found')
+    }
+    const { task } = req.body
+    todo.tasks.push(task)
+    await todo.save()
+    res.status(200).json({
+      success: true,
+      message: 'Task added successfully',
+    })
+  } catch (error) {
+    console.log(error)
   }
 }
 
