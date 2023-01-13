@@ -14,5 +14,4 @@ const connectToDB = () => {
       process.exit(1)
     })
 }
-
 module.exports = connectToDB

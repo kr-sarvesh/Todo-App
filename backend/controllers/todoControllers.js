@@ -34,6 +34,27 @@ exports.todoCreate = async (req, res) => {
     console.log(error)
   }
 }
+//=========== Edit Todos title ===========//
+exports.editTodo = async (req, res) => {
+  try {
+    const { todoId } = req.params
+    const findTodo = await TodoSchema.findById(todoId)
+    if (!findTodo) {
+      throw new Error('Todo not found')
+    } else {
+      findTodo.title = req.body.title
+      await findTodo.save()
+      res.status(200).json({
+        success: true,
+        message: 'Todo updated successfully',
+        findTodo,
+      })
+    }
+  } catch (error) {
+    console.log(error));
+  }
+}
+
 //=========== Get All Todos ===========//
 
 exports.todoGet = async (req, res) => {
@@ -99,6 +120,25 @@ exports.todoDelete = async (req, res) => {
       message: error.message,
       error,
     })
+  }
+}
+
+//=========== Delete Task ===========//
+exports.deleteTask = async (req, res) => {
+  try{
+    const {id} = req.params
+    const todo = await TodoSchema.findByIdAndDelete(id)
+    if(!todo){
+      throw new Error('Todo not found')
+    }
+    return res.status(200).json({
+      success: true,
+      message: 'Todo deleted successfully',
+      todo
+    })
+  }
+  catch(error){
+    console.log(error)
   }
 }
 
