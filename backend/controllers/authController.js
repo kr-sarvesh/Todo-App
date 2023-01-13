@@ -4,6 +4,8 @@ const User = require('../schema/User')
 const { validationResult } = require('express-validator')
 // Importing Bcrypt
 const bcrypt = require('bcrypt')
+//Importing JWT
+const jwt = require('jsonwebtoken')
 
 exports.createuser = async (req, res) => {
   // If there are errors,return Bad Request and the Errors

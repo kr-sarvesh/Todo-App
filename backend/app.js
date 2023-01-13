@@ -3,7 +3,7 @@ const express = require('express')
 const app = express()
 const connectToDB = require('./config/db')
 
-// Importing Routes
+// Importing all Routes here
 const todoRoutes = require('./routes/todoRoutes')
 const authRoutes = require('./routes/authRoutes')
 
@@ -15,8 +15,9 @@ app.use(express.json())
 //Accepting form data
 app.use(express.urlencoded({ extended: true }))
 
-// Routes
-app.use('/', todoRoutes)
-app.use('/', authRoutes)
+// router middleware
+app.use('/api/v1', todoRoutes)
+app.use('/api/v1', authRoutes)
 
+//export app.js
 module.exports = app
