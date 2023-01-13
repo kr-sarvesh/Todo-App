@@ -1,15 +1,15 @@
 //  Importing Todo Schema for CRUD operations
-const TodoSchema = require('../schema/todoSchema')
+const TodoSchema = require('../schema/TodoSchema')
 
 exports.home = (req, res) => {
-  res.send('Welcome to my home page')
+  res.send('home page')
 }
 
 exports.aboutus = (req, res) => {
   res.send('About us page')
 }
 
-//=========== Create Todos ===========//
+//================ Create Todos ================//
 
 exports.todoCreate = async (req, res) => {
   try {
@@ -34,7 +34,8 @@ exports.todoCreate = async (req, res) => {
     console.log(error)
   }
 }
-//=========== Edit Todos title ===========//
+
+//================ Edit Todos title ===========//
 exports.editTodo = async (req, res) => {
   try {
     const { todoId } = req.params
@@ -51,13 +52,13 @@ exports.editTodo = async (req, res) => {
       })
     }
   } catch (error) {
-    console.log(error));
+    console.log(error)
   }
 }
 
 //=========== Get All Todos ===========//
 
-exports.todoGet = async (req, res) => {
+exports.todoGetAll = async (req, res) => {
   try {
     const todos = await TodoSchema.find()
     res.status(200).json({
@@ -125,19 +126,18 @@ exports.todoDelete = async (req, res) => {
 
 //=========== Delete Task ===========//
 exports.deleteTask = async (req, res) => {
-  try{
-    const {id} = req.params
+  try {
+    const { id } = req.params
     const todo = await TodoSchema.findByIdAndDelete(id)
-    if(!todo){
+    if (!todo) {
       throw new Error('Todo not found')
     }
     return res.status(200).json({
       success: true,
       message: 'Todo deleted successfully',
-      todo
+      todo,
     })
-  }
-  catch(error){
+  } catch (error) {
     console.log(error)
   }
 }
