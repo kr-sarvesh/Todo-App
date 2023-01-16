@@ -4,7 +4,7 @@ const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 //for generating random string
 const crypto = require('crypto')
-
+//creating a schema user
 const UserSchema = mongoose.Schema({
   name: {
     type: String,
@@ -39,19 +39,19 @@ UserSchema.pre('save', async function (next) {
 })
 
 // Validate the password with passed on user password
-//isValidatedPassword is a method that we are creating which will return true or false
+// isValidatedPassword is a method that we are creating which will return true or false
 UserSchema.methods.isValidatedPassword = async function (usersendpassword) {
   return await bcrypt.compare(usersendpassword, this.password)
 }
 
 //create and return the jwt token
-userSchema.methods.getJwtToken = function () {
+UserSchema.methods.getJwtToken = function () {
   return jwt.sign({ id: this._id }, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_EXPIRY,
   })
 }
 //generate the forgot password token(String)
-userSchema.methods.getResetPasswordToken = function () {
+UserSchema.methods.getForgotPasswordToken = function () {
   //generate a long and random string
   const forgotToken = crypto.randomBytes(20).toString('hex')
   // getting a hash - make sure to get a hash on backend
@@ -65,4 +65,4 @@ userSchema.methods.getResetPasswordToken = function () {
   return forgotToken
 }
 
-module.exports = mongoose.model('user', UserSchema)
+module.exports = mongoose.model('User', UserSchema)

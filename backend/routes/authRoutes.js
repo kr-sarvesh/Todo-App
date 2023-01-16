@@ -6,10 +6,10 @@ const router = express.Router()
 const { body } = require('express-validator')
 
 //importing controllers from authController
-const { createuser } = require('../controllers/authController')
+const { createuser } = require('../controllers/userController')
 //create a User using Post
 router.post(
-  '/api/createuser',
+  '/createuser',
   [
     body('name', 'Please enter a valid username').not().isEmpty(),
     body('email', 'Please enter a valid email').isEmail(),

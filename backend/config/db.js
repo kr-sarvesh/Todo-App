@@ -10,7 +10,8 @@ const connectToDB = () => {
       console.log(`Connected Successfully to DB ${conn.connection.host}`)
     )
     .catch((err) => {
-      console.error(err.message)
+      console.log("Couldn't connect to DB")
+      console.error(err)
       process.exit(1)
     })
 }

@@ -12,6 +12,7 @@ connectToDB()
 
 // Middleware
 app.use(express.json())
+
 //Accepting form data
 app.use(express.urlencoded({ extended: true }))
 

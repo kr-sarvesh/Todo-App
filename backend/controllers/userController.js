@@ -6,7 +6,7 @@ const { validationResult } = require('express-validator')
 const bcrypt = require('bcrypt')
 //Importing JWT
 const jwt = require('jsonwebtoken')
-
+//create a User or signup
 exports.createuser = async (req, res) => {
   // If there are errors,return Bad Request and the Errors
   const errors = validationResult(req)
@@ -23,7 +23,9 @@ exports.createuser = async (req, res) => {
         .json({ errors: [{ msg: 'User with email already exists' }] })
     }
     // ******* Encrypting the password using bcrypt *******
+
     // Generating salt
+
     const salt = await bcrypt.genSalt(10)
     // Hashing the password
     const secPass = await bcrypt.hash(req.body.password, salt)
@@ -34,6 +36,15 @@ exports.createuser = async (req, res) => {
       email: req.body.email,
       password: secPass,
     })
+    // ********* token generation **********
+    const token = user.getJwtToken()
+
+    // const options = {
+    //   expires: new Date(
+    //     Date.now()+ 24 * 60 * 60 * 1000;
+    //   )
+    // }
+
     res.status(200).json({ message: 'User created successfully', user })
   } catch (error) {
     // catch errors
