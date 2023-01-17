@@ -17,8 +17,9 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
 // router middleware
-app.use('/api/v1', todoRoutes)
-app.use('/api/v1', authRoutes)
+app.use('/', todoRoutes)
+app.use('/', authRoutes)
 
 //export app.js
+
 module.exports = app

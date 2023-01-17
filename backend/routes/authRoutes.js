@@ -7,6 +7,7 @@ const { body } = require('express-validator')
 
 //importing controllers from authController
 const { createuser } = require('../controllers/userController')
+
 //create a User using Post
 router.post(
   '/createuser',
@@ -19,5 +20,6 @@ router.post(
   ],
   createuser
 )
-
+//login user using post
+router.post('/login', loginuser)
 module.exports = router
