@@ -1,16 +1,24 @@
 const mongoose = require('mongoose')
 const validator = require('validator')
-const bcrypt = require('bcrypt')
+const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 //for generating random string
 const crypto = require('crypto')
 //creating a schema user
 const UserSchema = mongoose.Schema({
-  name: {
+  firstname: {
     type: String,
+    default: null,
     required: [true, 'Please add a name'],
-    maxlength: [50, 'Name cannot be more than 40 characters'],
+    maxlength: [40, 'Name cannot be more than 40 characters'],
   },
+  lastname: {
+    type: String,
+    default: null,
+    required: [true, 'Please add last name'],
+    maxlength: [40, 'Name cannot be more than 40 characters'],
+  },
+
   email: {
     type: String,
     required: [true, 'Please add an email'],
@@ -32,40 +40,40 @@ const UserSchema = mongoose.Schema({
     default: Date.now,
   },
 })
-// encrypting password using bcrypt before save
-UserSchema.pre('save', async function (next) {
-  if (!this.isModified('password')) {
-    return next()
-  }
-  // this used to access any of the fields in the schema
-  this.password = await bcrypt.hash(this.password, 10)
-})
+// // encrypting password using bcrypt before save
+// UserSchema.pre('save', async function (next) {
+//   if (!this.isModified('password')) {
+//     return next()
+//   }
+//   // this used to access any of the fields in the schema
+//   this.password = await bcrypt.hash(this.password, 10)
+// })
 
-// Validate the password with passed on user password
-// isValidatedPassword is a method that we are creating which will return true or false
-UserSchema.methods.isValidatedPassword = async function (usersendpassword) {
-  return await bcrypt.compare(usersendpassword, this.password)
-}
+// // Validate the password with passed on user password
+// // isValidatedPassword is a method that we are creating which will return true or false
+// UserSchema.methods.isValidatedPassword = async function (usersendpassword) {
+//   return await bcrypt.compare(usersendpassword, this.password)
+// }
 
-//create and return the jwt token
-UserSchema.methods.getJwtToken = function () {
-  return jwt.sign({ id: this._id }, process.env.JWT_SECRET, {
-    expiresIn: process.env.JWT_EXPIRY,
-  })
-}
-//generate the forgot password token(String)
-UserSchema.methods.getForgotPasswordToken = function () {
-  //generate a long and random string
-  const forgotToken = crypto.randomBytes(20).toString('hex')
-  // getting a hash - make sure to get a hash on backend
-  this.forgotPasswordToken = crypto
-    .createHash('sha256')
-    .update(forgotToken)
-    .digest('hex')
-  // time of the token
-  this.forgotPasswordExpire = Date.now() + 20 * 60 * 1000
+// //create and return the jwt token
+// UserSchema.methods.getJwtToken = function () {
+//   return jwt.sign({ id: this._id }, process.env.JWT_SECRET, {
+//     expiresIn: process.env.JWT_EXPIRY,
+//   })
+// }
+// //generate the forgot password token(String)
+// UserSchema.methods.getForgotPasswordToken = function () {
+//   //generate a long and random string
+//   const forgotToken = crypto.randomBytes(20).toString('hex')
+//   // getting a hash - make sure to get a hash on backend
+//   this.forgotPasswordToken = crypto
+//     .createHash('sha256')
+//     .update(forgotToken)
+//     .digest('hex')
+//   // time of the token
+//   this.forgotPasswordExpire = Date.now() + 20 * 60 * 1000
 
-  return forgotToken
-}
+//   return forgotToken
+// }
 
-module.exports = mongoose.model('User', UserSchema)
+module.exports = mongoose.model('user', UserSchema)

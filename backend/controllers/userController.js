@@ -2,69 +2,102 @@
 const User = require('../schema/User')
 // Importing express-validator
 const { validationResult } = require('express-validator')
-// Importing Bcrypt
-const bcrypt = require('bcrypt')
+// Importing Bcryptjs
+const bcrypt = require('bcryptjs')
 //Importing JWT(Json web Token)
 const jwt = require('jsonwebtoken')
 
-//create a User or signup
+// ************************** Create a User or Signup **************************
 
-exports.createuser = async (req, res) => {
+exports.register = async (req, res) => {
   // If there are errors,return Bad Request and the Errors
   const errors = validationResult(req)
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() })
   }
-
   // See if user with this email already exists
   try {
-    let user = await User.findOne({ email: req.body.email })
-    if (user) {
-      return res
-        .status(400)
-        .json({ errors: [{ msg: 'User with email already exists' }] })
+    const { firstname, lastname, email, password } = req.body
+    // checking if user already exists
+    if (!(email && password && firstname && lastname)) {
+      res.status(400).send('All fields are required')
     }
-
+    const existingUser = await User.findOne({ email })
+    //if existingUser is true, then user already exists
+    if (existingUser) {
+      res.status(401).send('User already exists')
+    }
     // ************* Encrypting the password using bcrypt *************
-    // Generating salt
+    // Hashing the password:
+    const myEncPassword = await bcrypt.hash(password, 10)
+    //user creation)
 
-    const salt = await bcrypt.genSalt(10)
-    // Hashing the password
-    const secPass = await bcrypt.hash(req.body.password, salt)
-
-    // Create a New User
-
-    user = await User.create({
-      name: req.body.name,
-      email: req.body.email,
-      // It will be replaced by encrypted password
-      password: secPass,
+    const user = await User.create({
+      firstname,
+      lastname,
+      email: email,
+      password: myEncPassword,
     })
-
-    // ********* Token creation **********
-
+    console.log('hello')
+    console.log(user.firstname)
+    //token creation
     const token = jwt.sign(
-      { user_id: user._id, email: user.email },
+      //payload
+      { user_id: user._id, email },
+      //secret key
       process.env.JWT_SECRET,
+      //token expiry
       {
         expiresIn: process.env.JWT_EXPIRY,
       }
     )
-    // sendig token or send just success yes and rediret to login page-choice
+    // token update in user
     user.token = token
-
-    //handle password situation
+    // handling the password situation
     user.password = undefined
-
-    // const options = {
-    //   expires: new Date(
-    //     Date.now()+ 24 * 60 * 60 * 1000;
-    //   )
-    // }
-
-    res.status(200).json({ message: 'User created successfully', user })
+    res.status(201).send({ message: 'user created', user })
   } catch (error) {
     // catch errors
-    res.status(500).send('Internal Server Error')
+    res.status(500).send('Error in user registration')
+  }
+}
+
+// ************* create a Login *************
+
+exports.loginuser = async (req, res) => {
+  //wrapping with try catch, otherwise we have to go with promises
+  try {
+    // we are using destructuring to get email and password from req.body
+    const { email, password } = req.body
+    // if email and password is not entered
+    if (!(email && password)) {
+      res.status(400).send('Enter all the fields')
+    }
+    //user checking in database
+    const user = await User.findOne({ email })
+    if (!user) {
+      res.status(400).send('You are not registered in our application')
+    }
+    // ******* Password Checking ******
+    if (user && (await bcrypt.compare(password, user.password))) {
+      // if password is correct, generate a token
+      const token = jwt.sign(
+        { user_id: user._id, email: user.email },
+        process.env.JWT_SECRET,
+        //token expiry
+        {
+          expiresIn: process.env.JWT_EXPIRY,
+        }
+      )
+      // adding token to user
+      user.token = token
+      //don't send password to frontend
+      user.password = undefined
+      //sending response
+      res.status(200).json({ message: 'Login Successful', user })
+    }
+    res.status(400).send('email or password is incorrect')
+  } catch (error) {
+    res.status(401).send('Error in Login Route')
   }
 }

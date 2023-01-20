@@ -2,24 +2,26 @@
 const express = require('express')
 const router = express.Router()
 
-//Importing express-validator
-const { body } = require('express-validator')
+// //Importing express-validator
+// const { body } = require('express-validator')
 
 //importing controllers from authController
-const { createuser } = require('../controllers/userController')
+const { register, loginuser } = require('../controllers/userController')
 
 //create a User using Post
 router.post(
-  '/createuser',
-  [
-    body('name', 'Please enter a valid username').not().isEmpty(),
-    body('email', 'Please enter a valid email').isEmail(),
-    body('password', 'Password must be at least 6 characters').isLength({
-      min: 6,
-    }),
-  ],
-  createuser
+  '/register',
+  // ,
+  // [
+  //   body('firstname', 'Please enter a valid first name').not().isEmpty(),
+  //   body('lastname', 'Please enter a valid last name').not().isEmpty(),
+  //   body('email', 'Please enter a valid email').isEmail(),
+  //   body('password', 'Password must be at least 6 characters').isLength({
+  //     min: 6,
+  //   }),
+  // ],
+  register
 )
-//login user using post
+//login user using Post request
 router.post('/login', loginuser)
 module.exports = router
