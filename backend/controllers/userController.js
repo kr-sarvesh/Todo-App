@@ -7,7 +7,7 @@ const bcrypt = require('bcryptjs')
 //Importing JWT(Json web Token)
 const jwt = require('jsonwebtoken')
 
-// ************************** Create a User or Signup **************************
+// ************************** Create a User or Signup or Register **************************
 
 exports.register = async (req, res) => {
   // If there are errors,return Bad Request and the Errors
@@ -62,7 +62,7 @@ exports.register = async (req, res) => {
   }
 }
 
-// ************* create a Login *************
+// ************************** Create a Login ***********************************************
 
 exports.loginuser = async (req, res) => {
   //wrapping with try catch, otherwise we have to go with promises
@@ -73,12 +73,14 @@ exports.loginuser = async (req, res) => {
     if (!(email && password)) {
       res.status(400).send('Enter all the fields')
     }
-    //user checking in database
+    //User checking in database
     const user = await User.findOne({ email })
     if (!user) {
       res.status(400).send('You are not registered in our application')
     }
-    // ******* Password Checking ******
+
+    // ************ Password Checking *************
+
     if (user && (await bcrypt.compare(password, user.password))) {
       // if password is correct, generate a token
       const token = jwt.sign(
@@ -89,15 +91,38 @@ exports.loginuser = async (req, res) => {
           expiresIn: process.env.JWT_EXPIRY,
         }
       )
-      // adding token to user
+      // Adding Token to User
       user.token = token
       //don't send password to frontend
       user.password = undefined
       //sending response
-      res.status(200).json({ message: 'Login Successful', user })
+      // res.status(200).json({ message: 'Login Successful', user })
+
+      // ** if you want to use Cookies  **
+
+      const options = {
+        //expires in 3 day
+        expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
+        //cookie can be used by backend servers only
+        httpOnly: true,
+      }
+
+      //In middleware we are expecting to recieve as a token, value as token and cookieoptions
+      res.status(200).cookie('token', token, options).json({
+        success: true,
+        token,
+        user,
+      })
     }
     res.status(400).send('email or password is incorrect')
   } catch (error) {
-    res.status(401).send('Error in Login Route')
+    console.log(error)
+    // res.status(401).send('Error in Login Route')
   }
+}
+
+// ************* Dashboard Login *************
+
+exports.dashboard = async (req, res) => {
+  res.status(200).send('Welcome to Dashboard')
 }

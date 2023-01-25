@@ -1,12 +1,16 @@
 // Importing Express to define routes
 const express = require('express')
 const router = express.Router()
-
+const auth = require('../middlewares/auth')
 // //Importing express-validator
 const { body } = require('express-validator')
 
 //importing controllers from authController
-const { register, loginuser } = require('../controllers/userController')
+const {
+  register,
+  loginuser,
+  dashboard,
+} = require('../controllers/userController')
 
 //create a User using Post
 router.post(
@@ -24,7 +28,7 @@ router.post(
 //login user using Post request
 router.post('/login', loginuser)
 
-//dashboard Route
-router.get('/dashboard', dashboard)
+//Dashboard Route:
+router.get('/dashboard', auth, dashboard)
 
 module.exports = router
