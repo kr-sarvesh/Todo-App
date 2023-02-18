@@ -1,7 +1,7 @@
 // Importing Express to define routes
 const express = require('express')
 const router = express.Router()
-const auth = require('../middlewares/auth')
+const { protect } = require('../middleware/auth')
 // //Importing express-validator
 const { body } = require('express-validator')
 
@@ -29,6 +29,6 @@ router.post(
 router.post('/login', loginuser)
 
 //Dashboard Route:
-router.get('/dashboard', auth, dashboard)
+router.get('/dashboard', protect, dashboard)
 
 module.exports = router

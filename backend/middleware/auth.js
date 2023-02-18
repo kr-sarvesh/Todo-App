@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken')
 //Model is optional
 
 // Hunting for the Token
-const auth = (req, res, next) => {
+exports.protect = (req, res, next) => {
   //looking for the token in the header, cookie or body
   const token =
     req.cookies.token ||
@@ -24,4 +24,3 @@ const auth = (req, res, next) => {
   }
   return next()
 }
-module.exports = auth
