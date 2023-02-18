@@ -1,5 +1,7 @@
 //  Importing Todo Schema for CRUD operations
 const TodoSchema = require('../schema/TodoSchema')
+//  Importing the user schema so that one user can't delete another user's todo
+const User = require('../schema/User')
 
 exports.home = (req, res) => {
   res.send('home page')
@@ -20,10 +22,12 @@ exports.todoCreate = async (req, res) => {
     // Check if todo already Exists :
     const todoExists = await TodoSchema.findOne({ title })
     if (todoExists) {
-      throw new Error('Todo already exists')
+      res.status(400).json({
+        failed: 'Todo already exists',
+      })
     }
 
-    // Insert the Todo into Database
+    // Insert the Todo into Database:
     const todo = await TodoSchema.create({ title, tasks })
     res.status(201).json({
       success: true,
@@ -60,7 +64,8 @@ exports.editTodo = async (req, res) => {
 
 exports.todoGetAll = async (req, res) => {
   try {
-    const todos = await TodoSchema.find()
+    // importing the yser id from the token
+    const todos = await TodoSchema.find({ user: req.user.id })
     res.status(200).json({
       success: true,
       message: 'Todos fetched successfully',
@@ -76,13 +81,16 @@ exports.todoGetAll = async (req, res) => {
 }
 
 //=========== Add Tasks to Todos ===========//
+
 exports.createTask = async (req, res) => {
   try {
+    console.log('Hello')
     const { todoId } = req.params
+    console.log('todoId is ' + todoId)
     const todo = await TodoSchema.findById(todoId)
+    console.log('todo is ' + todo)
     if (!todo) {
       throw new Error('Todo not found')
-      res.status(401).send('Todo not found')
     }
     const { task } = req.body
     todo.tasks.push(task)
@@ -125,6 +133,7 @@ exports.todoDelete = async (req, res) => {
 }
 
 //=========== Delete Task ===========//
+
 exports.deleteTask = async (req, res) => {
   try {
     const { id } = req.params
