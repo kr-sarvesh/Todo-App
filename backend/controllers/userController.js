@@ -38,8 +38,6 @@ exports.register = async (req, res) => {
       email: email,
       password: myEncPassword,
     })
-    console.log('hello')
-    console.log(user.firstname)
     //token creation
     const token = jwt.sign(
       //payload
@@ -65,9 +63,9 @@ exports.register = async (req, res) => {
 // ************************** Create a Login ***********************************************
 
 exports.loginuser = async (req, res) => {
-  //wrapping with try catch, otherwise we have to go with promises
+  //wrapping with Try Catch, otherwise we have to go with Promises
   try {
-    // we are using destructuring to get email and password from req.body
+    // We are destructuring to get email and password from req.body
     const { email, password } = req.body
     // if email and password is not entered
     if (!(email && password)) {
@@ -99,7 +97,6 @@ exports.loginuser = async (req, res) => {
       // res.status(200).json({ message: 'Login Successful', user })
 
       // ** if you want to use Cookies  **
-
       const options = {
         //expires in 3 day
         expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
@@ -109,15 +106,14 @@ exports.loginuser = async (req, res) => {
 
       //In middleware we are expecting to recieve as a token, value as token and cookieoptions
       res.status(200).cookie('token', token, options).json({
-        success: true,
+        success: 'login successful',
         token,
         user,
       })
     }
-    res.status(400).send('email or password is incorrect')
   } catch (error) {
     console.log(error)
-    // res.status(401).send('Error in Login Route')
+    res.status(401).send('Error in Login Route')
   }
 }
 
