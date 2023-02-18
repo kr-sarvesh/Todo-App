@@ -13,22 +13,21 @@ const {
 } = require('../controllers/userController')
 
 //create a User using Post
-router.post(
-  '/register',
-  [
+router
+  .route('/api/user/register', [
     body('firstname', 'Please enter a valid first name').not().isEmpty(),
     body('lastname', 'Please enter a valid last name').not().isEmpty(),
     body('email', 'Please enter a valid email').isEmail(),
     body('password', 'Password must be at least 6 characters').isLength({
       min: 6,
     }),
-  ],
-  register
-)
-//login user using Post request
-router.post('/login', loginuser)
+  ])
+  .post(register)
+
+//login user using Post Request
+router.route('/api/login').post(loginuser)
 
 //Dashboard Route:
-router.get('/dashboard', protect, dashboard)
+router.route('/api/dashboard').get(protect, dashboard)
 
 module.exports = router
