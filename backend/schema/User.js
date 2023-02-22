@@ -5,7 +5,11 @@ const jwt = require('jsonwebtoken')
 //for generating random string
 const crypto = require('crypto')
 //creating a schema user
-const UserSchema = mongoose.Schema({
+const userSchema = new mongoose.Schema({
+  user: {
+    type: mongoose.Schema.ObjectId,
+    ref: 'User',
+  },
   firstname: {
     type: String,
     default: null,
@@ -76,4 +80,4 @@ const UserSchema = mongoose.Schema({
 //   return forgotToken
 // }
 
-module.exports = mongoose.model('user', UserSchema)
+module.exports = mongoose.model('User', userSchema)
