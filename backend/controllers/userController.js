@@ -7,7 +7,9 @@ const bcrypt = require('bcryptjs')
 //Importing JWT(Json web Token)
 const jwt = require('jsonwebtoken')
 
-// ************************** Create a User or Signup or Register **************************
+/**
+ * @desc    Register User
+ */
 
 exports.register = async (req, res) => {
   // If there are errors,return Bad Request and the Errors
@@ -29,34 +31,40 @@ exports.register = async (req, res) => {
     }
     // ************* Encrypting the password using bcrypt *************
     // Hashing the password:
-    const myEncPassword = await bcrypt.hash(password, 10)
-    //user creation)
-
+    const salt = await bcrypt.genSalt(10)
+    const myEncPassword = await bcrypt.hash(password, salt)
+    // Create a new user
     const user = await User.create({
       firstname,
       lastname,
       email: email,
       password: myEncPassword,
     })
-    //token creation
-    const token = jwt.sign(
-      //payload
-      { user_id: user._id, email },
-      //secret key
-      process.env.JWT_SECRET,
-      //token expiry
-      {
-        expiresIn: process.env.JWT_EXPIRY,
-      }
-    )
-    // token update in user
-    user.token = token
+    // //token creation
+    // const token = jwt.sign(
+    //   //payload
+    //   { user_id: user._id, email },
+    //   //secret key
+    //   process.env.JWT_SECRET,
+    //   //token expiry
+    //   {
+    //     expiresIn: process.env.JWT_EXPIRY,
+    //   }
+    // )
+    // token update or injection in user
+    // user.token = token
     // handling the password situation
     user.password = undefined
-    res.status(201).send({ message: 'user created', user })
+    res.status(201).send({
+      message: 'user created successfully',
+      _id: user.id,
+      email: user.email,
+      token: generateToken(user._id),
+    })
   } catch (error) {
     // catch errors
-    res.status(500).send('Error in user registration')
+    res.status(400)
+    throw new Error('Error in Register Route')
   }
 }
 
@@ -81,35 +89,42 @@ exports.loginuser = async (req, res) => {
 
     if (user && (await bcrypt.compare(password, user.password))) {
       // if password is correct, generate a token
-      const token = jwt.sign(
-        { user_id: user._id, email: user.email },
-        process.env.JWT_SECRET,
-        //token expiry
-        {
-          expiresIn: process.env.JWT_EXPIRY,
-        }
-      )
-      // Adding Token to User
-      user.token = token
-      //don't send password to frontend
+      // const token = jwt.sign(
+      //   { id: this._id },
+      //   process.env.JWT_SECRET,
+      //   //token expiry
+      //   {
+      //     expiresIn: process.env.JWT_EXPIRY,
+      //   }
+      // )
+      // // Adding Token to User
+      // user.token = token
+
+      // don't send password to frontend
       user.password = undefined
-      //sending response
-      // res.status(200).json({ message: 'Login Successful', user })
-
-      // ** if you want to use Cookies  **
-      const options = {
-        //expires in 3 day
-        expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
-        //cookie can be used by backend servers only
-        httpOnly: true,
-      }
-
-      //In middleware we are expecting to recieve as a token, value as token and cookieoptions
-      res.status(200).cookie('token', token, options).json({
-        success: 'login successful',
-        token,
+      // sending response
+      res.status(200).json({
+        message: 'Login Successful',
+        _id: user._id,
+        token: generateToken(user._id),
         user,
       })
+
+      // ** if you want to use Cookies  **
+      // const options = {
+      //   //expires in 3 day
+      //   expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
+      //   //cookie can be used by backend servers only
+      //   httpOnly: true,
+      // }
+
+      //In middleware we are expecting to recieve as a token, value as token and cookieoptions
+
+      // res.status(201).json({
+      //   success: 'login successful1',
+      //   token: generateToken(user._id),
+      //   user,
+      // })
     }
   } catch (error) {
     console.log(error)
@@ -120,5 +135,30 @@ exports.loginuser = async (req, res) => {
 // ************* Dashboard Login *************
 
 exports.dashboard = async (req, res) => {
-  res.status(200).send('Welcome to Dashboard')
+  const { _id, firstname, lastname, email } = await User.findById(req.user.id)
+  console.log(req.user)
+  res.status(200).json({
+    id: _id,
+    name: firstname + '' + lastname,
+    email,
+    message: 'Welcome to Dashboard',
+  })
+}
+
+// exports.dashboard = async (req, res) => {
+//   const { _id, firstname, lastname } = await User.findById(req.user.id)
+//   res.status(200).json({
+//     id: _id,
+//     name: firstname + ' ' + lastname,
+//     message: 'Welcome to Dashboard',
+//   })
+// }
+
+/**
+ * @desc    Token Generation function
+ */
+const generateToken = (id) => {
+  return jwt.sign({ id }, process.env.JWT_SECRET, {
+    expiresIn: process.env.JWT_EXPIRY,
+  })
 }
