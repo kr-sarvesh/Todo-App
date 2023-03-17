@@ -48,7 +48,18 @@ exports.editTodo = async (req, res) => {
     const { todoId } = req.params
     const findTodo = await TodoSchema.findById(todoId)
     if (!findTodo) {
+      res.status(400)
       throw new Error('Todo not found')
+    }
+    // Check if the user is authorized to edit the todo
+    if (!req.user) {
+      res.status(401)
+      throw new Error('Unauthorized')
+    }
+    //Make sure the logged in user matches the todo user
+    if (todo.user.toString() !== req.user.id) {
+      res.status(401)
+      throw new Error('Unauthorized')
     } else {
       findTodo.title = req.body.title
       await findTodo.save()
