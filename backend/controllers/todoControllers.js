@@ -54,12 +54,12 @@ exports.editTodo = async (req, res) => {
     // Check if the user is authorized to edit the todo
     if (!req.user) {
       res.status(401)
-      throw new Error('Unauthorized')
+      throw new Error('User not found')
     }
     //Make sure the logged in user matches the todo user
     if (todo.user.toString() !== req.user.id) {
       res.status(401)
-      throw new Error('Unauthorized')
+      throw new Error('Unauthorized User')
     } else {
       findTodo.title = req.body.title
       await findTodo.save()
