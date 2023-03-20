@@ -40,20 +40,6 @@ exports.register = async (req, res) => {
       email: email,
       password: myEncPassword,
     })
-    // //token creation
-    // const token = jwt.sign(
-    //   //payload
-    //   { user_id: user._id, email },
-    //   //secret key
-    //   process.env.JWT_SECRET,
-    //   //token expiry
-    //   {
-    //     expiresIn: process.env.JWT_EXPIRY,
-    //   }
-    // )
-    // token update or injection in user
-    // user.token = token
-    // handling the password situation
     user.password = undefined
     res.status(201).send({
       message: 'user created successfully',
@@ -63,8 +49,7 @@ exports.register = async (req, res) => {
     })
   } catch (error) {
     // catch errors
-    res.status(400)
-    throw new Error('Error in Register Route')
+    console.log(error)
   }
 }
 
