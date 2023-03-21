@@ -8,20 +8,41 @@ function Header() {
   const dispatch = useDispatch()
   const { user } = useSelector((state) => state.auth)
 
-  const onLogout = () => {}
+  const onLogout = () => {
+    dispatch(logout())
+    dispatch(reset())
+    navigate('/')
+  }
 
   return (
     <header className='header'>
       <div className='logo'>
-        <Link to='/'>Todo</Link>
+        <Link to='/'>Todo-List</Link>
       </div>
       <ul>
-        <li>
-          <Link to='/login'>Login</Link>
-        </li>
-        <li>
-          <Link to='/register'>Register</Link>
-        </li>
+        {user ? (
+          <li>
+            <button className='btn' onClick={onLogout}>
+              <FaSignOutAlt />
+              Logout
+            </button>
+          </li>
+        ) : (
+          <>
+            <li>
+              <Link to='/login'>
+                <FaSignInAlt />
+                login
+              </Link>
+            </li>
+            <li>
+              <Link to='/register'>
+                <FaUser />
+                Register
+              </Link>
+            </li>
+          </>
+        )}
       </ul>
     </header>
   )
