@@ -3,7 +3,7 @@ import axios from 'axios'
 const API_URL = '/api/users/'
 
 //Register user
-export const registerUser = async (userData, thunkAPI) => {
+const register = async (userData, thunkAPI) => {
   try {
     const response = await axios.post(`${API_URL}register`, userData)
     if (response.data) {
@@ -18,7 +18,13 @@ export const registerUser = async (userData, thunkAPI) => {
     return thunkAPI.rejectWithValue(message)
   }
 }
-const authService = {
-  registerUser,
+//logout user
+const logout = async () => {
+  localStorage.removeItem('user')
 }
+const authService = {
+  register,
+  logout,
+}
+
 export default authService
