@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react'
-import { FaSignInAlt, FaSignOutAlt, FaUser } from 'react-icons/fa'
+import { FaUser } from 'react-icons/fa'
 import { useSelector, useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
-import { register, reset, logout } from '../features/auth/authSlice'
+import { register, reset } from '../features/auth/authSlice'
 import Spinner from '../components/Spinner'
 
 function Register() {
@@ -14,6 +14,16 @@ function Register() {
     password: '',
     password2: '',
   })
+
+  const { firstname, lastname, email, password, password2 } = formData
+
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
+
+  const { user, isLoading, isError, isSuccess, message } = useSelector(
+    (state) => state.auth
+  )
+
   useEffect(() => {
     if (isError) {
       toast.error(message)
@@ -24,15 +34,6 @@ function Register() {
     }
     dispatch(reset())
   }, [user, isLoading, isError, isSuccess, message, dispatch, navigate])
-
-  const { firstname, lastname, email, password, password2 } = formData
-
-  const navigate = useNavigate()
-  const dispatch = useDispatch()
-
-  const { user, isLoading, isError, isSuccess, message } = useSelector(
-    (state) => state.auth
-  )
 
   const onChange = (e) => {
     setFormData((prevState) => ({
@@ -67,6 +68,7 @@ function Register() {
         </h1>
         <p>Please create an account</p>
       </section>
+
       <section className='form'>
         <form onSubmit={onSubmit}>
           <div className='form-group'>
@@ -75,19 +77,18 @@ function Register() {
               className='form-control'
               id='name'
               name='firstname'
-              value='{firstname}'
+              value={firstname}
               placeholder='Enter your first Name'
               onChange={onChange}
-              required
             />
           </div>
           <div className='form-group'>
             <input
               type='text'
               className='form-control'
-              id='name'
-              name='secondname'
-              value='{secondname}'
+              id='name2'
+              name='lastname'
+              value={lastname}
               placeholder='Enter your second Name'
               onChange={onChange}
               required
@@ -99,7 +100,7 @@ function Register() {
               className='form-control'
               id='email'
               name='email'
-              value='{email}'
+              value={email}
               placeholder='Enter your Email Address'
               onChange={onChange}
               required
@@ -111,7 +112,7 @@ function Register() {
               className='form-control'
               id='password'
               name='password'
-              value='{password}'
+              value={password}
               placeholder='Enter your Password'
               onChange={onChange}
               required
@@ -123,7 +124,7 @@ function Register() {
               className='form-control'
               id='password2'
               name='password2'
-              value='{password2}'
+              value={password2}
               placeholder='Enter your confirm password'
               onChange={onChange}
               required

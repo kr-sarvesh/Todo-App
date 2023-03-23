@@ -25,7 +25,7 @@ router
   .post(register)
 
 //login user using Post Request
-router.route('/api/login').post(loginuser)
+router.route('/api/user/login').post(loginuser)
 
 //Dashboard Route:
 router.route('/api/dashboard').get(protect, dashboard)
