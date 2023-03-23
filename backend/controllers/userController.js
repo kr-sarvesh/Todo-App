@@ -73,18 +73,6 @@ exports.loginuser = async (req, res) => {
     // ************ Password Checking *************
 
     if (user && (await bcrypt.compare(password, user.password))) {
-      // if password is correct, generate a token
-      // const token = jwt.sign(
-      //   { id: this._id },
-      //   process.env.JWT_SECRET,
-      //   //token expiry
-      //   {
-      //     expiresIn: process.env.JWT_EXPIRY,
-      //   }
-      // )
-      // // Adding Token to User
-      // user.token = token
-
       // don't send password to frontend
       user.password = undefined
       // sending response
@@ -94,22 +82,6 @@ exports.loginuser = async (req, res) => {
         token: generateToken(user._id),
         user,
       })
-
-      // ** if you want to use Cookies  **
-      // const options = {
-      //   //expires in 3 day
-      //   expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
-      //   //cookie can be used by backend servers only
-      //   httpOnly: true,
-      // }
-
-      //In middleware we are expecting to recieve as a token, value as token and cookieoptions
-
-      // res.status(201).json({
-      //   success: 'login successful1',
-      //   token: generateToken(user._id),
-      //   user,
-      // })
     }
   } catch (error) {
     console.log(error)
@@ -120,14 +92,9 @@ exports.loginuser = async (req, res) => {
 // ************* Dashboard Login *************
 
 exports.dashboard = async (req, res) => {
-  const { _id, firstname, lastname, email } = await User.findById(req.user.id)
-  console.log(req.user)
-  res.status(200).json({
-    id: _id,
-    name: firstname + '' + lastname,
-    email,
-    message: 'Welcome to Dashboard',
-  })
+  // const { _id, firstname, lastname, email } = await User.findById(req.user.id)
+  // console.log(req.user)
+  res.status(200).json(req.user)
 }
 
 // exports.dashboard = async (req, res) => {
