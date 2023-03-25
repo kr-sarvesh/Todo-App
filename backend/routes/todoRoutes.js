@@ -27,22 +27,22 @@ router.route('/api/aboutus').get(aboutus)
 /**
  * @route   POST api/todoCreate
  */
-router.route('/api/todoCreate/').post(protect, todoCreate)
+router.route('/api/todo/todoCreate/').post(protect, todoCreate)
 /**
  * @route   POST api/createTask/:id
  */
-router.route('/api/createTask/:id').post(protect, createTask)
+router.route('/api/todo/createTask/:id').post(protect, createTask)
 // router.route('/todoGet/:id').get(todoGet)
 /**
  * @route   GET api/todoGetAll/
  */
-router.route('/api/todoGetAll').get(protect, todoGetAll)
+router.route('/api/todo/todoGetAll').get(protect, todoGetAll)
 
 /**
  * @route   PUT api/editTodo/:id
  */
-router.route('/api/editTodo/:id').put(protect, editTodo)
-router.route('/api/todoDelete/:id').delete(todoDelete)
-router.route('/api/deleteTask/:id').delete(deleteTask)
+router.route('/api/todo/editTodo/:id').put(protect, editTodo)
+router.route('/api/todo/todoDelete/:id').delete(todoDelete)
+router.route('/api/todo/deleteTask/:id').delete(deleteTask)
 
 module.exports = router

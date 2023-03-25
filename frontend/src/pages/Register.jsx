@@ -130,12 +130,12 @@ function Register() {
               required
             />
           </div>
+          <div className='form-group'>
+            <button type='submit' className='btn btn-block'>
+              SUBMIT
+            </button>
+          </div>
         </form>
-        <div className='form-group'>
-          <button type='submit' className='btn btn-block'>
-            Submit
-          </button>
-        </div>
       </section>
     </>
   )

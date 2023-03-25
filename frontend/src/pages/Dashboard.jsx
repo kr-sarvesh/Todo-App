@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
+import TodoForm from '../components/TodoForm'
 
 function Dashboard() {
   const navigate = useNavigate()
@@ -18,6 +19,7 @@ function Dashboard() {
       <section className='heading'>
         <h1>Welcome {user && user.name}</h1>
         <p>Todos Dashboard</p>
+        <TodoForm />
       </section>
     </>
   )
