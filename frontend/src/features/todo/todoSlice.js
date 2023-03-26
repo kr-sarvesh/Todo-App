@@ -27,6 +27,23 @@ export const createTodo = createAsyncThunk(
   }
 )
 
+//Get all Todos
+export const getAllTodos = createAsyncThunk(
+  'goals/getAllTodos',
+  async (_, thunkAPI) => {
+    try {
+      const token = thunkAPI.getState().auth.user.token
+      return await todoService.getAllTodos(token)
+    } catch (err) {
+      const message =
+        (err.response && err.response.data && err.response.data.message) ||
+        err.message ||
+        err.toString()
+      return thunkAPI.rejectWithValue(message)
+    }
+  }
+)
+
 export const todoSlice = createSlice({
   name: 'todos',
   initialState,
@@ -46,7 +63,7 @@ export const todoSlice = createSlice({
       .addCase(createTodo.fulfilled, (state, action) => {
         state.isLoading = false
         state.isSuccess = true
-        state.todos = action.payload
+        state.todos.push(action.payload)
         state.message = 'Todo created successfully'
       })
       .addCase(createTodo.rejected, (state, action) => {
