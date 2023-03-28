@@ -32,11 +32,7 @@ exports.todoCreate = async (req, res) => {
       tasks: req.body.tasks,
       user: req.user.id,
     })
-    res.status(201).json({
-      success: true,
-      message: 'Todo created successfully',
-      todo: todo,
-    })
+    res.status(201).json(todo)
   } catch (error) {
     console.log(error)
   }
@@ -81,11 +77,7 @@ exports.todoGetAll = async (req, res) => {
     // importing the User id from the token
     const todos = await TodoSchema.find({ user: req.user.id })
     // console.log('user is' + req.user.id)
-    res.status(200).json({
-      success: true,
-      message: 'Todos fetched successfully',
-      todos,
-    })
+    res.status(200).json(todos)
   } catch (error) {
     console.log(error)
     res.status(400).json({

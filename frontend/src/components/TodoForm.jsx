@@ -11,13 +11,13 @@ function TodoForm() {
 
   const dispatch = useDispatch()
 
-  const { isLoading, isError, message } = useSelector((state) => state.todo)
+  const { isError, isLoading, message } = useSelector((state) => state.todos)
 
   useEffect(() => {
     if (isError) {
-      console.log('There is error')
+      console.log(message)
     }
-  }, [isError])
+  }, [isError, message])
 
   const onChange = (e) => {
     setTodoData((prevState) => ({
@@ -38,6 +38,7 @@ function TodoForm() {
   if (isLoading) {
     return <Spinner />
   }
+
   return (
     <>
       <section className='form'>

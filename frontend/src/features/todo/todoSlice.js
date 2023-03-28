@@ -29,7 +29,7 @@ export const createTodo = createAsyncThunk(
 
 //Get all Todos
 export const getAllTodos = createAsyncThunk(
-  'goals/getAllTodos',
+  'todo/getAllTodos',
   async (_, thunkAPI) => {
     try {
       const token = thunkAPI.getState().auth.user.token
@@ -45,7 +45,7 @@ export const getAllTodos = createAsyncThunk(
 )
 
 export const todoSlice = createSlice({
-  name: 'todos',
+  name: 'todo',
   initialState,
   reducers: {
     reset: (state) => initialState,
@@ -60,7 +60,6 @@ export const todoSlice = createSlice({
         state.isLoading = false
         state.isSuccess = true
         state.todos.push(action.payload)
-        state.message = 'Todo created successfully'
       })
       .addCase(createTodo.rejected, (state, action) => {
         state.isLoading = false
