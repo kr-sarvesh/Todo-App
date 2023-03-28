@@ -48,12 +48,7 @@ export const todoSlice = createSlice({
   name: 'todos',
   initialState,
   reducers: {
-    reset: (state) => {
-      state.isError = false
-      state.isLoading = false
-      state.isSuccess = false
-      state.message = ''
-    },
+    reset: (state) => initialState,
   },
 
   extraReducers: (builder) => {
@@ -70,7 +65,6 @@ export const todoSlice = createSlice({
       .addCase(createTodo.rejected, (state, action) => {
         state.isLoading = false
         state.isError = true
-        state.todos = []
         state.message = action.payload
       })
       .addCase(getAllTodos.pending, (state) => {
@@ -79,12 +73,12 @@ export const todoSlice = createSlice({
       .addCase(getAllTodos.fulfilled, (state, action) => {
         state.isLoading = false
         state.isSuccess = true
-        state.todos.push(action.payload)
+        state.todos = action.payload
         state.message = 'Todos fetched successfully'
       })
       .addCase(getAllTodos.rejected, (state, action) => {
-        state.isLoading = false
         state.isError = true
+        state.isLoading = false
         state.message = action.payload
       })
   },
