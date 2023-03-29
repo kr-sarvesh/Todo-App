@@ -27,13 +27,30 @@ export const createTodo = createAsyncThunk(
   }
 )
 
-//Get all Todos
+//Get all user Todos
 export const getAllTodos = createAsyncThunk(
   'todo/getAllTodos',
   async (_, thunkAPI) => {
     try {
       const token = thunkAPI.getState().auth.user.token
       return await todoService.getAllTodos(token)
+    } catch (err) {
+      const message =
+        (err.response && err.response.data && err.response.data.message) ||
+        err.message ||
+        err.toString()
+      return thunkAPI.rejectWithValue(message)
+    }
+  }
+)
+
+// Delete user Todo
+export const deleteTodo = createAsyncThunk(
+  'todo/deleteTodo',
+  async (id, thunkAPI) => {
+    try {
+      const token = thunkAPI.getState().auth.user.token
+      return await todoService.deleteTodoById(id, token)
     } catch (err) {
       const message =
         (err.response && err.response.data && err.response.data.message) ||
