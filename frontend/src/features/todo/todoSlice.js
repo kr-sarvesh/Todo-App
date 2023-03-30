@@ -97,6 +97,22 @@ export const todoSlice = createSlice({
         state.isLoading = false
         state.message = action.payload
       })
+      .addCase(deleteTodo.pending, (state) => {
+        state.isLoading = true
+      })
+      .addCase(deleteTodo.fulfilled, (state, action) => {
+        state.isLoading = false
+        state.isSuccess = true
+        state.todos = state.todos.filter(
+          (todo) => todo._id !== action.payload.id
+        )
+        state.message = 'Todo deleted successfully'
+      })
+      .addCase(deleteTodo.rejected, (state, action) => {
+        state.isLoading = false
+        state.isError = true
+        state.message = action.payload
+      })
   },
 })
 

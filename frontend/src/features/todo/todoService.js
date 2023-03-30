@@ -28,8 +28,21 @@ const getAllTodos = async (token) => {
   return response.data
 }
 
+//Delete user Todo
+const deleteTodoById = async (todoId, token) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  }
+  const response = await axios.delete(`${API_URL}/todoDelete/${todoId}`, config)
+
+  return response.data
+}
+
 const todoService = {
   createTodo,
   getAllTodos,
+  deleteTodoById,
 }
 export default todoService

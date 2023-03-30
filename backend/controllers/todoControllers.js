@@ -21,19 +21,22 @@ exports.todoCreate = async (req, res) => {
     }
     // Check if todo already Exists :
     const todoExists = await TodoSchema.findOne({ title })
+
     if (todoExists) {
       res.status(400).json({
         failed: 'Todo already exists',
       })
+    } else {
+      // Insert the Todo into Database:
+      const todo = await TodoSchema.create({
+        title: req.body.title,
+        tasks: req.body.tasks,
+        user: req.user.id,
+      })
+      res.status(201).json(todo)
     }
-    // Insert the Todo into Database:
-    const todo = await TodoSchema.create({
-      title: req.body.title,
-      tasks: req.body.tasks,
-      user: req.user.id,
-    })
-    res.status(201).json(todo)
   } catch (error) {
+    // Insert the Todo into Database:
     console.log(error)
   }
 }
@@ -114,29 +117,58 @@ exports.createTask = async (req, res) => {
 
 exports.todoDelete = async (req, res) => {
   try {
-    const { todoId } = req.params
+    const todo = await TodoSchema.findById(req.params.id)
 
-    if (!todoId) {
-      throw new Error('Todo Id is required to fetch the todo')
+    if (!todo) {
+      res.status(400).json({ message: 'Todo not found' })
     }
-    if (typeof todoId !== 'string') {
-      throw new Error('Todo Id should be of type string')
+
+    // Check if the user is authorized to delete the todo
+    if (!req.user) {
+      res.status(401).json({ message: 'User not found' })
+      throw new Error('User not found')
     }
-    const todo = await TodoSchema.findByIdAndDelete(todoId)
+    //Make sure the logged in user matches the todo user
+    if (todo.user.toString() !== req.user.id) {
+      res.status(401).json({ message: 'Unauthorized User' })
+      throw new Error('Unauthorized User')
+    }
+
+    await todo.remove()
+
     res.status(200).json({
       success: true,
       message: 'Todo deleted successfully',
-      delete: todo,
     })
   } catch (error) {
-    console.log('Error in deleting todo', error)
-    res.status(400).json({
-      success: false,
-      message: error.message,
-      error,
-    })
+    console.log(error)
   }
 }
+
+// exports.todoDelete = async (req, res) => {
+//   try {
+//     const { todoId } = req.params
+//     console.log('todoId is ' + todoId)
+//     if (!todoId) {
+//       throw new Error('Todo Id is required to fetch the todo')
+//     }
+//     if (typeof todoId !== 'string') {
+//       throw new Error('Todo Id should be of type string')
+//     }
+//     const todo = await TodoSchema.findByIdAndDelete({ _id: todoId })
+
+//     res.status(200).json({
+//       success: true,
+//       message: 'Todo deleted successfully',
+//       delete: todo,
+//     })
+//   } catch (error) {
+//     res.status(400).json({
+//       success: false,
+//       message: error.message,
+//     })
+//   }
+// }
 
 //=========== Delete Task ===========//
 
@@ -144,6 +176,7 @@ exports.deleteTask = async (req, res) => {
   try {
     const { id } = req.params
     const todo = await TodoSchema.findByIdAndDelete(id)
+    console.log('todo is ' + todo)
     if (!todo) {
       throw new Error('Todo not found')
     }

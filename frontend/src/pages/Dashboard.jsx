@@ -39,7 +39,7 @@ function Dashboard() {
         {todos.length > 0 ? (
           <div className='todos'>
             {todos.map((todo) => (
-              <todoItem key={todo._id} goal={todo} />
+              <TodoItem key={todo._id} todo={todo} />
             ))}
           </div>
         ) : (

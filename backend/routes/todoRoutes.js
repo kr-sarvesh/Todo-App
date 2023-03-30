@@ -42,7 +42,9 @@ router.route('/api/todo/todoGetAll').get(protect, todoGetAll)
  * @route   PUT api/editTodo/:id
  */
 router.route('/api/todo/editTodo/:id').put(protect, editTodo)
-router.route('/api/todo/todoDelete/:id').delete(todoDelete)
+
+router.route('/api/todo/todoDelete/:id').delete(protect, todoDelete)
+
 router.route('/api/todo/deleteTask/:id').delete(deleteTask)
 
 module.exports = router
