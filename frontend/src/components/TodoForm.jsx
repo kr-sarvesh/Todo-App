@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { createTodo, getAllTodos, reset } from '../features/todo/todoSlice'
-import { toast } from 'react-toastify'
+import { createTodo } from '../features/todo/todoSlice'
 import Spinner from './Spinner'
 
 function TodoForm() {

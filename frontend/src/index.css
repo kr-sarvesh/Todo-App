@@ -94,10 +94,11 @@ h3 {
 }
 
 .todo {
-  background-color: #f4f4f4;
-  margin: 10px 0;
-  padding: 20px 0 10px;
+  margin: 10px 5px;
+  padding: 20px 2px;
   position: relative;
+  border: 5px solid #e6e6e6;
+  border-radius: 5px;
 }
 
 .todo .close {
@@ -181,6 +182,31 @@ h3 {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+.taskList {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  align-content: center;
+  border: 1px solid #e6e6e6;
+}
+.taskList .todolisticons {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 30px;
+  align-content: center;
+  border: 1px solid #e6e6e6;
+}
+.taskList .todolisticons .taskFill:hover {
+  cursor: pointer;
+}
+.taskList .todolisticons .taskEdit:hover {
+  cursor: pointer;
+}
+.taskList .todolisticons .taskDelete:hover {
+  cursor: pointer;
 }
 
 .loadingSpinner {
