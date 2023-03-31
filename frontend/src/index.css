@@ -171,6 +171,12 @@ h3 {
   transform: scale(0.98);
 }
 
+#btn-close {
+  position: absolute;
+  border: 1px solid black;
+  top: 20px;
+  right: 20px;
+}
 .loadingSpinnerContainer {
   position: fixed;
   top: 0;
