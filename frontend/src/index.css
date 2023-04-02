@@ -194,9 +194,22 @@ h3 {
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
+  width: 100%;
   align-content: center;
-  border: 1px solid #e6e6e6;
+  border: 5px solid black;
 }
+
+.taskList .tasks {
+  border: 2px solid #e6e6e6;
+  display: flex;
+  justify-content: space-between;
+  padding: 1px;
+  align-items: center;
+  align-content: center;
+  width: 250px;
+  cursor: pointer;
+}
+
 .taskList .todolisticons {
   display: flex;
   justify-content: space-between;
@@ -205,11 +218,10 @@ h3 {
   align-content: center;
   border: 1px solid #e6e6e6;
 }
-.taskList .todolisticons .taskFill:hover {
-  cursor: pointer;
-}
+
 .taskList .todolisticons .taskEdit:hover {
   cursor: pointer;
+  border: 1px solid black;
 }
 .taskList .todolisticons .taskDelete:hover {
   cursor: pointer;
