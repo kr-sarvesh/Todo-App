@@ -41,33 +41,20 @@ exports.todoCreate = async (req, res) => {
   }
 }
 
-//================ Edit Todos title ===========//
+//================ Edit Todos task ===========//
 exports.editTodo = async (req, res) => {
   try {
-    const { todoId } = req.params
-    const findTodo = await TodoSchema.findById(todoId)
-    if (!findTodo) {
-      res.status(400)
+    const { id } = req.params
+    const { key, newtask } = req.body
+
+    const todo = await TodoSchema.findById(id).exec()
+
+    if (!todo) {
       throw new Error('Todo not found')
     }
-    // Check if the user is authorized to edit the todo
-    if (!req.user) {
-      res.status(401)
-      throw new Error('User not found')
-    }
-    //Make sure the logged in user matches the todo user
-    if (todo.user.toString() !== req.user.id) {
-      res.status(401)
-      throw new Error('Unauthorized User')
-    } else {
-      findTodo.title = req.body.title
-      await findTodo.save()
-      res.status(200).json({
-        success: true,
-        message: 'Todo updated successfully',
-        findTodo,
-      })
-    }
+    todo.tasks[key] = newtask
+    await todo.save()
+    res.status(200).json(todo)
   } catch (error) {
     console.log(error)
   }
@@ -107,9 +94,10 @@ exports.createTask = async (req, res) => {
     res.status(200).json({
       success: true,
       message: 'Task added successfully',
+      todo,
     })
   } catch (error) {
-    console.log(error)
+    console.log('error is ' + error)
   }
 }
 
