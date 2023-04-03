@@ -86,44 +86,6 @@ function TodoItem({ todo }) {
               })}
 
               <div className='todolisticons'>
-                <div className='taskFill'>
-                  <RiTaskFill onClick={openTaskModal} id='addtasks' />
-
-                  <Modal
-                    isOpen={modalIsOpen}
-                    style={customStyles}
-                    onRequestClose={closeTaskModal}
-                    aria={{ labelledby: 'taskTodo', describedby: 'addtasks' }}
-                  >
-                    <h1 id='taskTodo'>Add More Tasks</h1>
-                    <button
-                      className='btn '
-                      id='btn-close addtasks'
-                      onClick={closeTaskModal}
-                    >
-                      X
-                    </button>
-
-                    <form id='addtasks' onSubmit={onTaskSubmit}>
-                      <div className='form-group'>
-                        <textarea
-                          className='form-control'
-                          placeholder='Enter Task to add'
-                          id='taskTodo'
-                          name='taskTodo'
-                          value={taskTodo}
-                          onChange={(e) => setTaskTodo(e.target.value)}
-                        ></textarea>
-                      </div>
-                      <div className='form-group'>
-                        <button type='submit' className='btn btn-primary'>
-                          Submit
-                        </button>
-                      </div>
-                    </form>
-                  </Modal>
-                </div>
-
                 <div className='taskEdit'>
                   <AiFillEdit onClick={openEditModal} />
                   <Modal
@@ -158,6 +120,44 @@ function TodoItem({ todo }) {
                 </div>
               </div>
             </ul>
+          </div>
+          <div className='taskFill'>
+            <button className='btn' onClick={openTaskModal} id='addtasks'>
+              Add Tasks
+            </button>
+            <Modal
+              isOpen={modalIsOpen}
+              style={customStyles}
+              onRequestClose={closeTaskModal}
+              aria={{ labelledby: 'taskTodo', describedby: 'addtasks' }}
+            >
+              <h1 id='taskTodo'>Add More Tasks</h1>
+              <button
+                className='btn '
+                id='btn-close addtasks'
+                onClick={closeTaskModal}
+              >
+                X
+              </button>
+
+              <form id='addtasks' onSubmit={onTaskSubmit}>
+                <div className='form-group'>
+                  <textarea
+                    className='form-control'
+                    placeholder='Enter Task to add'
+                    id='taskTodo'
+                    name='taskTodo'
+                    value={taskTodo}
+                    onChange={(e) => setTaskTodo(e.target.value)}
+                  ></textarea>
+                </div>
+                <div className='form-group'>
+                  <button type='submit' className='btn btn-primary'>
+                    Submit
+                  </button>
+                </div>
+              </form>
+            </Modal>
           </div>
         </div>
         <button
