@@ -85,10 +85,11 @@ export const addTask = createAsyncThunk(
 //update Task
 export const updateTask = createAsyncThunk(
   'todo/updateTask',
-  async ({ id, newTask, key }, thunkAPI) => {
+  async ({ id, newtask, key }, thunkAPI) => {
     try {
       const token = thunkAPI.getState().auth.user.token
-      return await todoService.updateTaskById(id, newTask, key, token)
+      console.log('id is', id, newtask, key)
+      return await todoService.updateTaskById(id, newtask, key, token)
     } catch (error) {
       const message =
         (error.response &&
@@ -137,6 +138,23 @@ export const todoSlice = createSlice({
         state.isLoading = false
         state.message = action.payload
       })
+      .addCase(updateTask.pending, (state) => {
+        state.isLoading = true
+      })
+      .addCase(updateTask.fulfilled, (state, action) => {
+        state.isLoading = false
+        state.isSuccess = true
+        state.todos = state.todos.map((todo) =>
+          todo._id === action.payload.id ? action.payload : todo
+        )
+        state.message = 'Task updated successfully'
+      })
+      .addCase(updateTask.rejected, (state, action) => {
+        state.isLoading = false
+        state.isError = true
+        state.message = action.payload
+      })
+
       .addCase(deleteTodo.pending, (state) => {
         state.isLoading = true
       })

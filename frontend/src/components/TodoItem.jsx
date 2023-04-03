@@ -1,10 +1,8 @@
 import { useState, useEffect } from 'react'
-import { toast } from 'react-toastify'
 import { useDispatch, useSelector } from 'react-redux'
-import { deleteTodo, addTask } from '../features/todo/todoSlice'
+import { deleteTodo, addTask, updateTask } from '../features/todo/todoSlice'
 import Modal from 'react-modal'
 import { TiChevronRight } from 'react-icons/ti'
-import { RiTaskFill } from 'react-icons/ri'
 import { AiFillEdit } from 'react-icons/ai'
 import { AiOutlineDelete } from 'react-icons/ai'
 import Spinner from './Spinner'
@@ -31,7 +29,9 @@ function TodoItem({ todo }) {
   const [editModelIsOpen, setEditModelIsOpen] = useState(false)
   const [editTaskTodo, setEditTaskTodo] = useState('')
 
-  const { isError, isLoading, message } = useSelector((state) => state.todos)
+  const [editedTaskIndex, setEditedTaskIndex] = useState(-1)
+
+  const { isLoading } = useSelector((state) => state.todos)
 
   const dispatch = useDispatch()
 
@@ -56,12 +56,23 @@ function TodoItem({ todo }) {
 
   // open edit modal
   const openEditModal = () => {
-    console.log('open edit modal')
     setEditModelIsOpen(true)
   }
   //close edit modal
   const closeEditModal = () => {
     setEditModelIsOpen(false)
+  }
+  //edit task
+  const editTaskHandle = (e) => {
+    e.preventDefault()
+    dispatch(
+      updateTask({
+        id: todo._id,
+        newtask: editTaskTodo,
+        key: editedTaskIndex,
+      })
+    )
+    closeEditModal()
   }
 
   if (isLoading) {
@@ -81,13 +92,18 @@ function TodoItem({ todo }) {
                 return (
                   <li key={index}>
                     <TiChevronRight /> {task}
+                    <AiFillEdit
+                      onClick={() => {
+                        openEditModal()
+                        setEditedTaskIndex(index)
+                      }}
+                    />
                   </li>
                 )
               })}
 
               <div className='todolisticons'>
                 <div className='taskEdit'>
-                  <AiFillEdit onClick={openEditModal} />
                   <Modal
                     isOpen={editModelIsOpen}
                     style={customStyles}
@@ -95,7 +111,7 @@ function TodoItem({ todo }) {
                   >
                     <h1>Edit Task</h1>
 
-                    <form>
+                    <form onSubmit={editTaskHandle}>
                       <div className='form-group'>
                         <textarea
                           className='form-control'

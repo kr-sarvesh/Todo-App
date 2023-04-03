@@ -48,7 +48,7 @@ exports.editTodo = async (req, res) => {
     const { key, newtask } = req.body
 
     const todo = await TodoSchema.findById(id).exec()
-
+    console.log('key is ' + key)
     if (!todo) {
       throw new Error('Todo not found')
     }

@@ -60,13 +60,22 @@ const addTaskbyId = async (id, task, token) => {
 }
 
 //update user Todo
-const updateTaskById = async (id, task, key, token) => {
+const updateTaskById = async (id, newtask, key, token) => {
   const config = {
     headers: {
       Authorization: `Bearer ${token}`,
     },
   }
-  console.log('data is', id, task, key)
+  console.log('id is', id, newtask, key)
+
+  const response = await axios.put(
+    `${API_URL}/editTodo/${id}/`,
+    { key, newtask },
+
+    config
+  )
+  console.log('response is', response)
+  return response.data
 }
 
 const todoService = {
