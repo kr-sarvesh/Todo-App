@@ -33,16 +33,14 @@ function TodoItem({ todo }) {
 
   const { isError, isLoading, message } = useSelector((state) => state.todos)
 
+  const dispatch = useDispatch()
+
   //useEffect
-  useEffect(() => {
-    if (isError) {
-      toast.error(message)
-    }
-  }, [isError, message])
 
   //create task submit
   const onTaskSubmit = (e) => {
     e.preventDefault()
+    dispatch(addTask({ id: todo._id, task: taskTodo }))
     closeTaskModal()
   }
 
@@ -66,8 +64,6 @@ function TodoItem({ todo }) {
     setEditModelIsOpen(false)
   }
 
-  const dispatch = useDispatch()
-
   if (isLoading) {
     return <Spinner />
   }
@@ -81,10 +77,10 @@ function TodoItem({ todo }) {
           Todo Tasks:
           <div className='taskList'>
             <ul>
-              {todo.tasks.map((task, id) => {
+              {todo.tasks.map((task, index) => {
                 return (
-                  <li key={id}>
-                    <TiChevronRight /> {task.id}
+                  <li key={index}>
+                    <TiChevronRight /> {task}
                   </li>
                 )
               })}

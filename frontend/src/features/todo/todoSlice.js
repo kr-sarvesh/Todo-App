@@ -65,10 +65,30 @@ export const deleteTodo = createAsyncThunk(
 
 export const addTask = createAsyncThunk(
   'todo/updateTodo',
-  async (id, thunkAPI) => {
+  async ({ id, task }, thunkAPI) => {
     try {
       const token = thunkAPI.getState().auth.user.token
-      return await todoService.addTaskbyId(id, token)
+      console.log('data is', id, task)
+      return await todoService.addTaskbyId(id, task, token)
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString()
+      return thunkAPI.rejectWithValue(message)
+    }
+  }
+)
+
+//update Task
+export const updateTask = createAsyncThunk(
+  'todo/updateTask',
+  async ({ id, newTask, key }, thunkAPI) => {
+    try {
+      const token = thunkAPI.getState().auth.user.token
+      return await todoService.updateTaskById(id, newTask, key, token)
     } catch (error) {
       const message =
         (error.response &&
