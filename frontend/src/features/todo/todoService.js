@@ -59,7 +59,7 @@ const addTaskbyId = async (id, task, token) => {
   return response.data
 }
 
-//update user Todo
+//update user Task
 const updateTaskById = async (id, newtask, key, token) => {
   const config = {
     headers: {
@@ -78,11 +78,29 @@ const updateTaskById = async (id, newtask, key, token) => {
   return response.data
 }
 
+//delete user Task
+const deleteTaskById = async (id, key, token) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  }
+  console.log(`id is ${id} and key is ${key} and token is ${token}`)
+  const data = { key: key }
+
+  const response = await axios.delete(`${API_URL}/deleteTask/${id}`, {
+    headers: config.headers,
+    data: data,
+  })
+  return response.data
+}
+
 const todoService = {
   createTodo,
   getAllTodos,
   deleteTodoById,
   addTaskbyId,
   updateTaskById,
+  deleteTaskById,
 }
 export default todoService

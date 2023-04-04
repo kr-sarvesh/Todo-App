@@ -1,6 +1,11 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { deleteTodo, addTask, updateTask } from '../features/todo/todoSlice'
+import {
+  deleteTodo,
+  addTask,
+  updateTask,
+  deleteTask,
+} from '../features/todo/todoSlice'
 import Modal from 'react-modal'
 import { TiChevronRight } from 'react-icons/ti'
 import { AiFillEdit } from 'react-icons/ai'
@@ -30,6 +35,7 @@ function TodoItem({ todo }) {
   const [editTaskTodo, setEditTaskTodo] = useState('')
 
   const [editedTaskIndex, setEditedTaskIndex] = useState(-1)
+  const [deleteTaskIndex, setDeleteTaskIndex] = useState(-1)
 
   const { isLoading } = useSelector((state) => state.todos)
 
@@ -62,7 +68,7 @@ function TodoItem({ todo }) {
   const closeEditModal = () => {
     setEditModelIsOpen(false)
   }
-  //edit task
+  //edit task handle
   const editTaskHandle = (e) => {
     e.preventDefault()
     dispatch(
@@ -73,6 +79,18 @@ function TodoItem({ todo }) {
       })
     )
     closeEditModal()
+  }
+
+  //delete task handle
+  const deleteTaskHandle = (e) => {
+    console.log('delete task handle')
+    e.preventDefault()
+    dispatch(
+      deleteTask({
+        id: todo._id,
+        key: deleteTaskIndex,
+      })
+    )
   }
 
   if (isLoading) {
@@ -99,40 +117,43 @@ function TodoItem({ todo }) {
                           setEditedTaskIndex(index)
                         }}
                       />
-                      <AiOutlineDelete />
+                      <AiOutlineDelete
+                        onClick={(e) => {
+                          deleteTaskHandle(e)
+                          setDeleteTaskIndex(index)
+                        }}
+                      />
                     </div>
                   </li>
                 )
               })}
 
-              <div className=''>
-                <div className='taskEdit'>
-                  <Modal
-                    isOpen={editModelIsOpen}
-                    style={customStyles}
-                    onRequestClose={closeEditModal}
-                  >
-                    <h1>Edit Task</h1>
+              <div className='taskEdit'>
+                <Modal
+                  isOpen={editModelIsOpen}
+                  style={customStyles}
+                  onRequestClose={closeEditModal}
+                >
+                  <h1>Edit Task</h1>
 
-                    <form onSubmit={editTaskHandle}>
-                      <div className='form-group'>
-                        <textarea
-                          className='form-control'
-                          placeholder='Enter Task to edit'
-                          id='editTaskTodo'
-                          name='editTaskTodo'
-                          value={editTaskTodo}
-                          onChange={(e) => setEditTaskTodo(e.target.value)}
-                        ></textarea>
-                      </div>
-                      <div className='form-group'>
-                        <button type='submit' className='btn btn-primary'>
-                          Submit
-                        </button>
-                      </div>
-                    </form>
-                  </Modal>
-                </div>
+                  <form onSubmit={editTaskHandle}>
+                    <div className='form-group'>
+                      <textarea
+                        className='form-control'
+                        placeholder='Enter Task to edit'
+                        id='editTaskTodo'
+                        name='editTaskTodo'
+                        value={editTaskTodo}
+                        onChange={(e) => setEditTaskTodo(e.target.value)}
+                      ></textarea>
+                    </div>
+                    <div className='form-group'>
+                      <button type='submit' className='btn btn-primary'>
+                        Submit
+                      </button>
+                    </div>
+                  </form>
+                </Modal>
               </div>
             </ul>
           </div>
@@ -166,7 +187,7 @@ function TodoItem({ todo }) {
                     onChange={(e) => setTaskTodo(e.target.value)}
                   ></textarea>
                 </div>
-                <div className='form-group'>
+                <div className='todo'>
                   <button type='submit' className='btn btn-primary'>
                     Submit
                   </button>
