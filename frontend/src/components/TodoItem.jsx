@@ -92,17 +92,20 @@ function TodoItem({ todo }) {
                 return (
                   <li key={index}>
                     <TiChevronRight /> {task}
-                    <AiFillEdit
-                      onClick={() => {
-                        openEditModal()
-                        setEditedTaskIndex(index)
-                      }}
-                    />
+                    <div className='todolisticons'>
+                      <AiFillEdit
+                        onClick={() => {
+                          openEditModal()
+                          setEditedTaskIndex(index)
+                        }}
+                      />
+                      <AiOutlineDelete />
+                    </div>
                   </li>
                 )
               })}
 
-              <div className='todolisticons'>
+              <div className=''>
                 <div className='taskEdit'>
                   <Modal
                     isOpen={editModelIsOpen}
@@ -129,10 +132,6 @@ function TodoItem({ todo }) {
                       </div>
                     </form>
                   </Modal>
-                </div>
-
-                <div className='taskDelete'>
-                  <AiOutlineDelete />
                 </div>
               </div>
             </ul>

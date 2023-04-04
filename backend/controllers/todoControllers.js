@@ -163,16 +163,16 @@ exports.todoDelete = async (req, res) => {
 exports.deleteTask = async (req, res) => {
   try {
     const { id } = req.params
-    const todo = await TodoSchema.findByIdAndDelete(id)
-    console.log('todo is ' + todo)
+    const { key } = req.body
+
+    const todo = await TodoSchema.findById(id).exec()
+    console.log('key is ' + key)
     if (!todo) {
       throw new Error('Todo not found')
     }
-    return res.status(200).json({
-      success: true,
-      message: 'Todo deleted successfully',
-      todo,
-    })
+    todo.tasks.splice(key, 1)
+    await todo.save()
+    res.status(200).json(todo)
   } catch (error) {
     console.log(error)
   }
