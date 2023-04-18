@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const API_URL = 'todo-app-production-5693.up.railway.app'
+const API_URL = 'todo-app-production-5693.up.railway.app/api/user'
 
 //Register user
 const register = async (userData, thunkAPI) => {
@@ -21,7 +21,7 @@ const register = async (userData, thunkAPI) => {
 
 // Login user
 const login = async (userData) => {
-  const response = await axios.post(`${API_URL}login`, userData)
+  const response = await axios.post(`${API_URL}/login`, userData)
   if (response.data) {
     localStorage.setItem('user', JSON.stringify(response.data))
   }
