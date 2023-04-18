@@ -91,16 +91,14 @@ exports.loginuser = async (req, res) => {
 
 // ************* Dashboard Login *************
 
-z
-
-// exports.dashboard = async (req, res) => {
-//   const { _id, firstname, lastname } = await User.findById(req.user.id)
-//   res.status(200).json({
-//     id: _id,
-//     name: firstname + ' ' + lastname,
-//     message: 'Welcome to Dashboard',
-//   })
-// }
+exports.dashboard = async (req, res) => {
+  const { _id, firstname, lastname } = await User.findById(req.user.id)
+  res.status(200).json({
+    id: _id,
+    name: firstname + ' ' + lastname,
+    message: 'Welcome to Dashboard',
+  })
+}
 
 /**
  * @desc    Token Generation function
