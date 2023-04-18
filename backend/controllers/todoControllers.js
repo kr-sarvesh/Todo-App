@@ -4,7 +4,7 @@ const TodoSchema = require('../schema/todoSchema')
 const User = require('../schema/User')
 
 exports.home = (req, res) => {
-  res.send('home page')
+  res.send('Home page')
 }
 
 exports.aboutus = (req, res) => {

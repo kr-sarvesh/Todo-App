@@ -5,6 +5,7 @@ const connectToDB = require('./config/db')
 // Importing all Routes here
 const todoRoutes = require('./routes/todoRoutes')
 const authRoutes = require('./routes/authRoutes')
+const cors = require('cors')
 
 //Connect to Datbase
 connectToDB()
@@ -14,6 +15,9 @@ app.use(express.json())
 
 //Accepting form data
 app.use(express.urlencoded({ extended: true }))
+
+// Cors
+app.use(cors())
 
 // router middleware
 app.use('/', todoRoutes)

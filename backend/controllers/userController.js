@@ -91,11 +91,7 @@ exports.loginuser = async (req, res) => {
 
 // ************* Dashboard Login *************
 
-exports.dashboard = async (req, res) => {
-  // const { _id, firstname, lastname, email } = await User.findById(req.user.id)
-  // console.log(req.user)
-  res.status(200).json(req.user)
-}
+z
 
 // exports.dashboard = async (req, res) => {
 //   const { _id, firstname, lastname } = await User.findById(req.user.id)
