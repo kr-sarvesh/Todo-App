@@ -1,5 +1,5 @@
 import axios from 'axios'
-const API_URL = '/api/todo'
+const API_URL = 'todo-app-production-5693.up.railway.app'
 
 //create new Todo
 
@@ -86,6 +86,7 @@ const deleteTaskById = async (id, key, token) => {
     },
   }
   console.log(`id is ${id} and key is ${key} and token is ${token}`)
+
   const data = { key: key }
 
   const response = await axios.delete(`${API_URL}/deleteTask/${id}`, {
