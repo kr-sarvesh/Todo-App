@@ -10,7 +10,11 @@ const createTodo = async (todoData, token) => {
     },
   }
 
-  const response = await axios.post(`${API_URL}/todoCreate/`, todoData, config)
+  const response = await axios.post(
+    `${API_URL}/api/todo/todoCreate/`,
+    todoData,
+    config
+  )
 
   return response.data
 }
@@ -24,7 +28,7 @@ const getAllTodos = async (token) => {
     },
   }
 
-  const response = await axios.get(`${API_URL}/todoGetAll`, config)
+  const response = await axios.get(`${API_URL}/api/todo/todoGetAll`, config)
   return response.data
 }
 
@@ -35,7 +39,10 @@ const deleteTodoById = async (todoId, token) => {
       Authorization: `Bearer ${token}`,
     },
   }
-  const response = await axios.delete(`${API_URL}/todoDelete/${todoId}`, config)
+  const response = await axios.delete(
+    `${API_URL}/api/todo/todoDelete/${todoId}`,
+    config
+  )
 
   return response.data
 }
@@ -47,14 +54,13 @@ const addTaskbyId = async (id, task, token) => {
       Authorization: `Bearer ${token}`,
     },
   }
-  console.log('data is', task, id)
 
   const response = await axios.post(
-    `${API_URL}/createTask/${id}`,
+    `${API_URL}/api/todo/createTask/${id}`,
     { task },
     config
   )
-  console.log('response is', response)
+  // console.log('response is', response)
 
   return response.data
 }
@@ -66,15 +72,15 @@ const updateTaskById = async (id, newtask, key, token) => {
       Authorization: `Bearer ${token}`,
     },
   }
-  console.log('id is', id, newtask, key)
+  // console.log('id is', id, newtask, key)
 
   const response = await axios.put(
-    `${API_URL}/editTodo/${id}/`,
+    `${API_URL}/api/todo/editTodo/${id}/`,
     { key, newtask },
 
     config
   )
-  console.log('response is', response)
+  // console.log('response is', response)
   return response.data
 }
 
@@ -85,11 +91,11 @@ const deleteTaskById = async (id, key, token) => {
       Authorization: `Bearer ${token}`,
     },
   }
-  console.log(`id is ${id} and key is ${key} and token is ${token}`)
+  // console.log(`id is ${id} and key is ${key} and token is ${token}`)
 
   const data = { key: key }
 
-  const response = await axios.delete(`${API_URL}/deleteTask/${id}`, {
+  const response = await axios.delete(`${API_URL}/api/todo/deleteTask/${id}`, {
     headers: config.headers,
     data: data,
   })
