@@ -68,6 +68,7 @@ function TodoItem({ todo }) {
   const closeEditModal = () => {
     setEditModelIsOpen(false)
   }
+
   //edit task handle
   const editTaskHandle = (e) => {
     e.preventDefault()

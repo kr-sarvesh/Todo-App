@@ -4,7 +4,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  background-color: rgb(238, 238, 228);
+  background-color: rgb(238, 238, 300);
 }
 
 body {
@@ -177,6 +177,7 @@ h3 {
   top: 20px;
   right: 20px;
 }
+
 .loadingSpinnerContainer {
   position: fixed;
   top: 0;
@@ -189,6 +190,7 @@ h3 {
   justify-content: center;
   align-items: center;
 }
+
 .taskList {
   display: flex;
   flex-direction: column;
@@ -196,11 +198,11 @@ h3 {
   align-items: center;
   width: 100%;
   align-content: center;
-  border: 5px solid black;
+  padding: 2px;
 }
 
 .taskList .tasks {
-  border: 2px solid #e6e6e6;
+  border: 1px solid #e6e6e6;
   display: flex;
   justify-content: space-between;
   padding: 1px;
