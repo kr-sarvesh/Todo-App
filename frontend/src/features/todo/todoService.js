@@ -1,5 +1,5 @@
 import axios from 'axios'
-const API_URL = 'todo-app-production-5693.up.railway.app'
+const API_URL = 'https://todo-app-production-5693.up.railway.app'
 
 //create new Todo
 
