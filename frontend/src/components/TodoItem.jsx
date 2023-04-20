@@ -101,7 +101,7 @@ function TodoItem({ todo }) {
     <>
       <div className='todo'>
         <div>{new Date(todo.createdAt).toLocaleString('en-US')}</div>
-        <h2>todo title is: {todo.title}</h2>
+        <h2>Todo Title is: {todo.title}</h2>
 
         <div>
           Todo Tasks:
