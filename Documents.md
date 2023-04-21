@@ -6,3 +6,6 @@ https://docs.google.com/presentation/d/e/2PACX-1vTY_7gTOOFWHZ_kdL71BUdH0r3vBgHJ_
 
 HlD (High Level Design)
 https://www.canva.com/design/DAFgukDHS0o/XIh6XsQl-ChHdJTMVwIFcg/view#1
+
+LLD (Low Level Design)
+https://www.canva.com/design/DAFgu-FWhAE/Ul5RHllsuTQqc7JbC0UlnA/view
